@@ -1,61 +1,21 @@
-import { computed, signal, useSignal, useSignalEffect } from "@preact/signals";
+import { useSignal } from "@preact/signals";
 import { useEffect } from "preact/hooks";
 import {
   connectWithProvider,
   discoverProviders,
   walletProviders,
 } from "../../../wallet/providers.ts";
+import { useWallet } from "../../../wallet/useWallet.ts";
 import { Avatar } from "../Avatar/Avatar.tsx";
 import { ModalButton } from "../ModalButton/ModalButton.tsx";
-import { getUsdcBalance } from "../../../wallet/ethers.ts";
-
-const STORAGE_KEY = "wallets5";
-
-const wallets = signal<
-  {
-    addresses: {
-      providerName: string;
-      address: string;
-    }[];
-    currentAddress: string | null;
-  }
->(
-  globalThis.localStorage && globalThis.localStorage.getItem(STORAGE_KEY)
-    ? JSON.parse(globalThis.localStorage.getItem(STORAGE_KEY)!)
-    : {
-      addresses: [],
-      currentAddress: null,
-    },
-);
-
-function formatAddress(address: string) {
-  if (address.endsWith(".eth")) {
-    return address;
-  }
-
-  return `${address.slice(0, 6)}…${address.slice(-5)}`;
-}
+import { formatAddress } from "../../../wallet/formatAddress.ts";
 
 export function WalletButton() {
+  const { connections } = useWallet();
+
   const providersExist = Object.values(walletProviders.value).length > 0;
   const connectModalOpen = useSignal(false);
   const buttonShown = useSignal(false);
-
-  const usdcBalances = useSignal<Record<string, number>>({});
-  const usdcBalance = computed(() => {
-    return Object.values(usdcBalances.value).reduce((a, b) => a + b, 0);
-  });
-
-  useSignalEffect(() => {
-    wallets.value.addresses.forEach(({ address }) => {
-      getUsdcBalance(address).then((balance) => {
-        usdcBalances.value = {
-          ...usdcBalances.value,
-          [address]: balance,
-        };
-      });
-    });
-  });
 
   useEffect(() => {
     discoverProviders();
@@ -69,22 +29,18 @@ export function WalletButton() {
     const addresses = await connectWithProvider(detail);
 
     for (const address of addresses) {
-      if (wallets.value.addresses.some((x) => x.address === address)) {
+      if (connections.value.addresses.some((x) => x.address === address)) {
         continue;
       }
 
-      wallets.value.addresses.push({ providerName, address });
+      connections.value.addresses.push({ providerName, address });
     }
 
-    if (!wallets.value.currentAddress) {
-      wallets.value.currentAddress = addresses[0] ?? null;
+    if (connections.value.currentAddress) {
+      connections.value.currentAddress = addresses[0];
     }
 
-    if (addresses.length > 0) {
-      connectModalOpen.value = false;
-    }
-
-    localStorage.setItem(STORAGE_KEY, JSON.stringify(wallets.value));
+    connections.value = { ...connections.value };
   }
 
   // Server side rendering
@@ -97,19 +53,18 @@ export function WalletButton() {
       <ModalButton
         buttonContent={
           <>
-            {wallets.value.currentAddress !== null && (
+            {connections.value.currentAddress !== null && (
               <div class="WalletButton__account_button">
                 <Avatar
-                  address={wallets.value.currentAddress}
+                  address={connections.value.currentAddress}
                   class="WalletButton__avatar"
                 />
-                <div class="WalletButton__account_button_address">
-                  {usdcBalance.value.toFixed(2)} USDC
-                </div>
+                {connections.value.currentAddress &&
+                  formatAddress(connections.value.currentAddress)}
               </div>
             )}
 
-            {(wallets.value.currentAddress === null) && (
+            {(connections.value.currentAddress === null) && (
               <div class="connect-wallet">
                 Connect Wallet
               </div>
@@ -118,21 +73,37 @@ export function WalletButton() {
         }
         modalContent={
           <>
-            {wallets.value.addresses.length > 0 && (
+            {connections.value.addresses.length > 0 && (
               <>
                 <h2>Addresses</h2>
-                <div>
-                  {wallets.value.addresses.map((address) => (
-                    <div class="WalletButton__wallet_address">
-                      <Avatar address={address.address} />
+                <div class="WalletButton__wallet_address_list">
+                  {connections.value.addresses.map(({ address }) => (
+                    <div
+                      class={connections.value.currentAddress === address
+                        ? "WalletButton__wallet_address disabled"
+                        : "WalletButton__wallet_address"}
+                      onClick={() => {
+                        connections.value = {
+                          ...connections.value,
+                          currentAddress: address,
+                        };
+                      }}
+                    >
+                      <Avatar address={address} />
                       <div class="address">
-                        {formatAddress(address.address)}
+                        {formatAddress(address)}
                       </div>
-                      <div class="WalletButton__wallet_address__balance">
-                        {(usdcBalances.value[address.address] ?? 0).toFixed(2)}
-                        {" "}
-                        USDC
-                      </div>
+                      {connections.value.currentAddress === address
+                        ? (
+                          <div class="wallet-option-button-pill">
+                            Current Address
+                          </div>
+                        )
+                        : (
+                          <div class="wallet-option-button-pill">
+                            Select
+                          </div>
+                        )}
                     </div>
                   ))}
                 </div>
@@ -140,7 +111,7 @@ export function WalletButton() {
             )}
 
             <h2>
-              {wallets.value.addresses.length > 0
+              {connections.value.addresses.length > 0
                 ? "Wallets"
                 : "Connect Wallet"}
             </h2>
@@ -159,7 +130,7 @@ export function WalletButton() {
 
               {providersExist &&
                 Object.values(walletProviders.value).map((provider) => {
-                  const connected = wallets.value.addresses.some(
+                  const connected = connections.value.addresses.some(
                     (x) => x.providerName === provider.name,
                   );
 
@@ -176,7 +147,7 @@ export function WalletButton() {
                         {provider.name}
                       </div>
                       <div class="wallet-option-button-pill">
-                        {connected ? "Connected" : "Connect"}
+                        {connected ? "Add accounts" : "Connect"}
                       </div>
                     </div>
                   );

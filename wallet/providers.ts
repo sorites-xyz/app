@@ -55,6 +55,15 @@ export const connectWithProvider = async (
   wallet: EIP6963AnnounceProviderEvent["detail"],
 ): Promise<string[]> => {
   try {
+    await wallet.provider.request({
+      "method": "wallet_requestPermissions",
+      "params": [
+        {
+          "eth_accounts": {},
+        },
+      ],
+    });
+
     return await wallet.provider.request({
       method: "eth_requestAccounts",
     }) as string[];
