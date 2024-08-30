@@ -77,7 +77,11 @@ export function MarketCard({ market }: MarketCardProps) {
                 width: `${market.betYesPercent}%`,
               }}
             >
-              {market.betYesPercent}%
+              {market.betYesPercent >= 20 && (
+                <>
+                  {market.betYesPercent}%
+                </>
+              )}
             </div>
             <div
               class={market.betYesPercent >= 50
@@ -87,7 +91,11 @@ export function MarketCard({ market }: MarketCardProps) {
                 width: `${100 - market.betYesPercent}%`,
               }}
             >
-              {100 - market.betYesPercent}%
+              {market.betYesPercent <= 80 && (
+                <>
+                  {100 - market.betYesPercent}%
+                </>
+              )}
             </div>
           </div>
           <div class="info">
