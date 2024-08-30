@@ -1,4 +1,4 @@
-import { useSignal } from "@preact/signals";
+import { useSignal, useSignalEffect } from "@preact/signals";
 import { useEffect } from "preact/hooks";
 import {
   connectWithProvider,
@@ -9,6 +9,7 @@ import { useWallet } from "../../../wallet/useWallet.ts";
 import { Avatar } from "../Avatar/Avatar.tsx";
 import { ModalButton } from "../ModalButton/ModalButton.tsx";
 import { formatAddress } from "../../../wallet/formatAddress.ts";
+import { getUsdcBalance } from "../../../wallet/ethers.ts";
 
 export function WalletButton() {
   const { connections } = useWallet();
@@ -16,6 +17,26 @@ export function WalletButton() {
   const providersExist = Object.values(walletProviders.value).length > 0;
   const connectModalOpen = useSignal(false);
   const buttonShown = useSignal(false);
+  const usdc = useSignal({ address: "", balance: 0 });
+
+  useSignalEffect(() => {
+    if (connections.value.currentAddress) {
+      if (usdc.value.address !== connections.value.currentAddress) {
+        usdc.value = { address: connections.value.currentAddress, balance: 0 };
+      }
+
+      // Fetch USDC balance
+      const address = connections.value.currentAddress;
+
+      getUsdcBalance(address).then((balance) => {
+        if (connections.value.currentAddress === address) {
+          usdc.value = { address, balance };
+        }
+      });
+    } else {
+      usdc.value = { address: "", balance: 0 };
+    }
+  });
 
   useEffect(() => {
     discoverProviders();
@@ -27,6 +48,10 @@ export function WalletButton() {
     detail: EIP6963AnnounceProviderEvent["detail"],
   ) {
     const addresses = await connectWithProvider(detail);
+
+    if (!addresses || addresses.length === 0) {
+      return;
+    }
 
     for (const address of addresses) {
       if (connections.value.addresses.some((x) => x.address === address)) {
@@ -59,8 +84,9 @@ export function WalletButton() {
                   address={connections.value.currentAddress}
                   class="WalletButton__avatar"
                 />
-                {connections.value.currentAddress &&
-                  formatAddress(connections.value.currentAddress)}
+                <div class="WalletButton__balance">
+                  {usdc.value.balance.toFixed(2)} USDC
+                </div>
               </div>
             )}
 

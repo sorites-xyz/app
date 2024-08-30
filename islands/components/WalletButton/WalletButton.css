@@ -1,9 +1,13 @@
 .WalletButton {
   transition: opacity 0.2s;
-  min-width: 150px;
+  min-width: 100px;
 
   &.WalletButton__faded {
     opacity: 0;
+  }
+
+  .WalletButton__balance {
+    font-weight: 500;
   }
 
   .connect-wallet {

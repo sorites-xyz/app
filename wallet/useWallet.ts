@@ -19,7 +19,7 @@ effect(() => {
 
 export function useWallet() {
   useSignalEffect(() => {
-    if ("localStorage" in globalThis) {
+    if ("localStorage" in globalThis && !connections.value.loaded) {
       const data = globalThis.localStorage.getItem(STORAGE_KEY);
 
       if (data) {
