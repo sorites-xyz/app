@@ -20,8 +20,8 @@ const wallets = signal<
     currentAddress: string | null;
   }
 >(
-  localStorage.getItem(STORAGE_KEY)
-    ? JSON.parse(localStorage.getItem(STORAGE_KEY)!)
+  globalThis.localStorage && globalThis.localStorage.getItem(STORAGE_KEY)
+    ? JSON.parse(globalThis.localStorage.getItem(STORAGE_KEY)!)
     : {
       addresses: [],
       currentAddress: null,
