@@ -1,0 +1,27 @@
+.ModalButton__modal_backdrop {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 10;
+  background: rgba(0, 0, 0, 0.7);
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.ModalButton__modal_content {
+  background: white;
+  margin: auto;
+
+  width: 400px;
+
+  padding: 20px;
+  border-radius: 5px;
+
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}

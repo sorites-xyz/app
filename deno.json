@@ -1,0 +1,47 @@
+{
+  "lock": false,
+  "tasks": {
+    "check": "deno fmt --check && deno lint && deno check **/*.ts && deno check **/*.tsx",
+    "cli": "echo \"import '\\$fresh/src/dev/cli.ts'\" | deno run --unstable -A -",
+    "manifest": "deno task cli manifest $(pwd)",
+    "start": "deno run -A --watch=static/,routes/ dev.ts",
+    "build": "deno run -A dev.ts build",
+    "preview": "deno run -A main.ts",
+    "update": "deno run -A -r https://fresh.deno.dev/update ."
+  },
+  "lint": {
+    "rules": {
+      "tags": [
+        "fresh",
+        "recommended"
+      ],
+      "exclude": [
+        "no-async-promise-executor"
+      ]
+    }
+  },
+  "exclude": [
+    "**/_fresh/*"
+  ],
+  "imports": {
+    "$fresh/": "https://deno.land/x/fresh@1.6.8/",
+    "$std/": "https://deno.land/std@0.216.0/",
+    "@preact/signals": "https://esm.sh/*@preact/signals@1.2.2",
+    "@preact/signals-core": "https://esm.sh/*@preact/signals-core@1.5.1",
+    "ethereum-blockies-base64": "npm:ethereum-blockies-base64@^1.0.2",
+    "preact": "https://esm.sh/preact@10.19.6",
+    "preact/": "https://esm.sh/preact@10.19.6/",
+    "wagmi": "https://esm.sh/wagmi@2.12.7",
+    "@wagmi/core": "https://esm.sh/@wagmi/core@2.13.4",
+    "@wagmi/core/chains": "https://esm.sh/@wagmi/core@2.13.4/chains",
+    "@wagmi/connectors": "https://esm.sh/@wagmi/connectors@5.1.7",
+    "viem": "https://esm.sh/viem@2.20.1",
+    "@tanstack/react-query": "https://esm.sh/@tanstack/react-query@5.52.2",
+    "@tanstack/query-core": "https://esm.sh/v135/@tanstack/query-core@5.52.0",
+    "@rainbow-me/rainbowkit": "https://esm.sh/@rainbow-me/rainbowkit@2.1.5"
+  },
+  "compilerOptions": {
+    "jsx": "react-jsx",
+    "jsxImportSource": "preact"
+  }
+}

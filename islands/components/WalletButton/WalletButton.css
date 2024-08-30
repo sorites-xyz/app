@@ -1,0 +1,128 @@
+.WalletButton {
+  transition: opacity 0.2s;
+  min-width: 150px;
+
+  &.WalletButton__faded {
+    opacity: 0;
+  }
+
+  .connect-wallet {
+    border-radius: 25px;
+    background: linear-gradient(90deg, #FF74FA 0%, hsl(0, 100%, 65%) 100%);
+    color: white;
+    font-weight: 500;
+    padding: 10px 20px;
+    cursor: pointer;
+    transition: 0.2s;
+
+    &:hover {
+      transform: scale(1.04);
+      opacity: 0.9;
+    }
+  }
+
+  .WalletButton__account_button {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 6px 15px 6px 6px;
+    border-radius: 25px;
+    cursor: pointer;
+    transition: 0.2s;
+    background: white;
+    border: solid 1px transparent;
+    transition: 0.2s;
+
+    &:hover {
+      border-color: #2D82E6;
+    }
+  }
+  
+  .WalletButton__avatar {
+    height: 26px;
+    border-radius: 50px;
+  }
+
+  .WalletButton__wallet_address {
+    border-radius: 5px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+
+    background: white;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    padding: 10px;
+
+    img {
+      height: 20px;
+      border-radius: 50px;
+    }
+
+    .address {
+      flex: 1;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+
+    .WalletButton__wallet_address__balance {
+      width: max-content;
+    }
+  }
+
+  .wallet-option-button {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 10px;
+    font-weight: 500;
+  
+    border-radius: 5px;
+    padding: 5px 10px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  
+    border: solid 2px transparent;
+    cursor: pointer;
+    transition: 0.2s;
+  
+    div {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+  
+    .wallet-option-button-pill {
+      border-radius: 5px;
+      padding: 5px 10px;
+      background: #2D82E633;
+      color: #000;
+      transition: 0.2s;
+    }
+  
+    &:hover {
+      border-color: #2D82E6;
+      box-shadow: none;
+  
+      .wallet-option-button-pill {
+        background: #2D82E6;
+        color: white;
+      }
+    }
+
+    &.wallet-option-button-connected {
+      opacity: 0.65;
+      pointer-events: none;
+    }
+  }
+  
+  .sep-h {
+    height: 1px;
+    background: rgba(0, 0, 0, 0.1);
+    width: 90%;
+    margin: 0 auto;
+  }
+
+  small {
+    color: rgba(0, 0, 0, 0.6);
+  }
+}
