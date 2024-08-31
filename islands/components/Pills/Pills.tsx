@@ -20,7 +20,13 @@ export function Pills({ options, selected }: PillsProps) {
       </div>
       {options.map((option) => (
         <div
-          onClick={() => selected.value = option.value}
+          onClick={() => {
+            if (selected.value === option.value) {
+              selected.value = null;
+            } else {
+              selected.value = option.value;
+            }
+          }}
           class={selected.value === option.value
             ? "Pills__pill Pills__pill__selected"
             : "Pills__pill"}
