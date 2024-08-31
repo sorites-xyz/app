@@ -2,6 +2,7 @@ import { MarketCard } from "./MarketCard.tsx";
 import type { Market } from "../../../types.ts";
 import { useSignal } from "@preact/signals";
 import { Pills } from "../../components/Pills/Pills.tsx";
+import { NewEventModalButton } from "../../components/NewEventModalButton/NewEventModalButton.tsx";
 
 const markets: Market[] = [
   {
@@ -263,7 +264,10 @@ export function Markets() {
 
   return (
     <div class="container gap-container">
-      <h1>Markets</h1>
+      <div class="text-button-row">
+        <h1>Markets</h1>
+        <NewEventModalButton />
+      </div>
 
       <Pills
         selected={currentTag}

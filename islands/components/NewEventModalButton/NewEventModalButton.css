@@ -1,0 +1,9 @@
+.NewEventModalButton__content_wrapper {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  
+  small {
+    display: block;
+  }
+}

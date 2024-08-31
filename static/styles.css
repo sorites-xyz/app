@@ -262,38 +262,6 @@ header {
       gap: 16px;
     }
 
-    .speculate-input-wrapper {
-      width: 100%;
-      border: solid 1px rgba(0, 0, 0, 0.1);
-      border-radius: 8px;
-      font-size: 16px;
-      overflow: hidden;
-
-      display: flex;
-      align-items: center;
-
-      span {
-        padding-left: 8px;
-      }
-
-      &:focus-within {
-        border-color: #2D82E6;
-      }
-      
-      .speculate-input {
-        border: 0;
-        height: 100%;
-        flex: 1;
-        padding: 5px;
-        padding-left: 0;
-        font-size: 16px;
-
-        &:focus {
-          outline: none;
-        }
-      }
-    }
-
     .speculate-button {
       border-radius: 8px;
       padding: 8px 20px;
@@ -409,5 +377,11 @@ table {
     font-weight: 600;
     line-height: 20px; /* 142.857% */
   }
+}
+
+.text-button-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
 }
 

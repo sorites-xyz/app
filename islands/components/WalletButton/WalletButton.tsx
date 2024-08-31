@@ -4,12 +4,12 @@ import {
   connectWithProvider,
   discoverProviders,
   walletProviders,
-} from "../../../wallet/providers.ts";
-import { useWallet } from "../../../wallet/useWallet.ts";
+} from "../../../blockchain/basic/providers.ts";
+import { useWallet } from "../../../blockchain/hooks/useWallet.ts";
 import { Avatar } from "../Avatar/Avatar.tsx";
 import { ModalButton } from "../ModalButton/ModalButton.tsx";
-import { formatAddress } from "../../../wallet/formatAddress.ts";
-import { getUsdcBalance } from "../../../wallet/ethers.ts";
+import { formatAddress } from "../../../blockchain/utils/formatAddress.ts";
+import { getUsdcBalance } from "../../../blockchain/getUsdcBalance.ts";
 
 export function WalletButton() {
   const { connections } = useWallet();

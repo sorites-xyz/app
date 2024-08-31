@@ -16,7 +16,8 @@
         "recommended"
       ],
       "exclude": [
-        "no-async-promise-executor"
+        "no-async-promise-executor",
+        "no-explicit-any"
       ]
     }
   },

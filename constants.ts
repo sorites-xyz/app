@@ -1,0 +1,3 @@
+export const PROD = false;
+export const SORITES_CONTRACT_ADDRESS =
+  "0x60d6F5fCBd2fAab392C3522A874F01bC80bf9C38";

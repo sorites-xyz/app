@@ -1,0 +1,50 @@
+.SelectInput__wrapper {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+
+  position: relative;
+
+  .SelectInput__caret {
+    position: absolute;
+    right: 8px;
+    transform: scale(0.6);
+    pointer-events: none;
+  }
+
+  .SelectInput__content {
+    width: 100%;
+    border: solid 1px rgba(0, 0, 0, 0.1);
+    border-radius: 8px;
+    font-size: 16px;
+    overflow: hidden;
+  
+    display: flex;
+    align-items: center;
+  
+    padding: 0 8px;
+    background: white;
+  
+    &:focus-within {
+      border-color: #2D82E6;
+    }
+    
+    select {
+      -webkit-appearance: none;
+      -moz-appearance: none;
+      appearance: none;
+
+      border: 0;
+      height: 100%;
+      flex: 1;
+      padding: 5px;
+      padding-left: 0;
+      font-size: 16px;
+      background: white;
+  
+      &:focus {
+        outline: none;
+      }
+    }
+  }
+}

@@ -1,0 +1,33 @@
+.ButtonComponent {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-weight: 500;
+  border-radius: 8px;
+  cursor: pointer;
+  user-select: none;
+  transition: all 0.2s;
+  border: solid 1px #2C2C2C;
+  height: 48px;
+  padding: 0 20px;
+
+  &.outlined {
+    color: #2C2C2C;
+    background: white;
+
+    &:hover {
+      color: white;
+      background: #2C2C2C;
+    }
+  }
+
+  &.filled {
+    color: white;
+    background: #2C2C2C;
+
+    &:hover {
+      color: #2C2C2C;
+      background: white;
+    }
+  }
+}

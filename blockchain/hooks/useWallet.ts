@@ -1,5 +1,5 @@
-import { effect, signal, useSignal, useSignalEffect } from "@preact/signals";
-import { ConnectionsData } from "./types.ts";
+import { effect, signal, useSignalEffect } from "@preact/signals";
+import { ConnectionsData } from "../types.ts";
 
 const STORAGE_KEY = "wallets8";
 
@@ -10,8 +10,6 @@ const connections = signal<ConnectionsData>({
 });
 
 effect(() => {
-  console.log("Saving connections to localStorage");
-
   if ("localStorage" in globalThis && connections.value.loaded) {
     localStorage.setItem(STORAGE_KEY, JSON.stringify(connections.value));
   }

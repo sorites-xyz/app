@@ -1,5 +1,6 @@
 import { formatCurrencyShort } from "../Markets/formatCurrencyShort.ts";
 import { PortfolioItem } from "../../../types.ts";
+import { Button } from "../../components/Button/Button.tsx";
 
 const portfolioItems: PortfolioItem[] = [
   {
@@ -57,7 +58,10 @@ const portfolioItems: PortfolioItem[] = [
 export function Portfolio() {
   return (
     <div class="container gap-container">
-      <h1>Portfolio</h1>
+      <div class="text-button-row">
+        <h1>Portfolio</h1>
+        <Button label="Claim all" />
+      </div>
 
       {portfolioItems.length === 0 && (
         <small>You haven't placed any speculations yet.</small>

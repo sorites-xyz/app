@@ -1,9 +1,9 @@
-import { Contract, JsonRpcProvider } from "npm:ethers";
+import { Contract } from "npm:ethers";
+import { ethersProvider } from "./basic/ethers.ts";
 
 let usdcContract: Contract | Promise<Contract> | null = null;
 
-const provider = new JsonRpcProvider("https://mainnet.base.org");
-
+// TODO: cache
 export async function getUsdcBalance(address: string) {
   const usdcProxyAddress = "0x833589fCD6eDb6E08f4c7C32D4f71b54bdA02913";
   const usdcImplementationAddress =
@@ -13,7 +13,7 @@ export async function getUsdcBalance(address: string) {
     usdcContract = await new Promise(async (resolve) => {
       const { abi } = await fetch(`/api/v1/abi/${usdcImplementationAddress}`)
         .then((res) => res.json());
-      const contract = new Contract(usdcProxyAddress, abi, provider);
+      const contract = new Contract(usdcProxyAddress, abi, ethersProvider);
       resolve(contract);
     });
   }

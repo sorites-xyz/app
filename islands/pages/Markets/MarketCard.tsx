@@ -2,6 +2,7 @@ import { signal } from "@preact/signals";
 import { formatCurrencyShort } from "./formatCurrencyShort.ts";
 import { Market } from "../../../types.ts";
 import { useId } from "preact/hooks";
+import { TextInput } from "../../components/TextInput/TextInput.tsx";
 
 type MarketCardProps = {
   market: Market;
@@ -29,15 +30,12 @@ export function MarketCard({ market }: MarketCardProps) {
             </div>
           </div>
 
-          <div class="speculate-input-wrapper">
-            <span>$</span>{" "}
-            <input
-              type="text"
-              defaultValue="1000"
-              class="speculate-input"
-              placeholder="1000"
-            />
-          </div>
+          <TextInput
+            value="123"
+            onChange={() => {}}
+            placeholder="1000"
+            before={<span>$</span>}
+          />
 
           {open.value === "yes"
             ? (

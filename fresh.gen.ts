@@ -9,9 +9,13 @@ import * as $_404 from "./routes/_404.tsx";
 import * as $_app from "./routes/_app.tsx";
 import * as $api_v1_abi_address_ from "./routes/api/v1/abi/[address].ts";
 import * as $components_Avatar_Avatar from "./islands/components/Avatar/Avatar.tsx";
+import * as $components_Button_Button from "./islands/components/Button/Button.tsx";
 import * as $components_ModalButton_ModalButton from "./islands/components/ModalButton/ModalButton.tsx";
+import * as $components_NewEventModalButton_NewEventModalButton from "./islands/components/NewEventModalButton/NewEventModalButton.tsx";
 import * as $components_Pills_PillTick from "./islands/components/Pills/PillTick.tsx";
 import * as $components_Pills_Pills from "./islands/components/Pills/Pills.tsx";
+import * as $components_SelectInput_SelectInput from "./islands/components/SelectInput/SelectInput.tsx";
+import * as $components_TextInput_TextInput from "./islands/components/TextInput/TextInput.tsx";
 import * as $components_WalletButton_WalletButton from "./islands/components/WalletButton/WalletButton.tsx";
 import * as $pages_Markets_MarketCard from "./islands/pages/Markets/MarketCard.tsx";
 import * as $pages_Markets_Markets from "./islands/pages/Markets/Markets.tsx";
@@ -30,10 +34,17 @@ const manifest = {
   },
   islands: {
     "./islands/components/Avatar/Avatar.tsx": $components_Avatar_Avatar,
+    "./islands/components/Button/Button.tsx": $components_Button_Button,
     "./islands/components/ModalButton/ModalButton.tsx":
       $components_ModalButton_ModalButton,
+    "./islands/components/NewEventModalButton/NewEventModalButton.tsx":
+      $components_NewEventModalButton_NewEventModalButton,
     "./islands/components/Pills/PillTick.tsx": $components_Pills_PillTick,
     "./islands/components/Pills/Pills.tsx": $components_Pills_Pills,
+    "./islands/components/SelectInput/SelectInput.tsx":
+      $components_SelectInput_SelectInput,
+    "./islands/components/TextInput/TextInput.tsx":
+      $components_TextInput_TextInput,
     "./islands/components/WalletButton/WalletButton.tsx":
       $components_WalletButton_WalletButton,
     "./islands/pages/Markets/MarketCard.tsx": $pages_Markets_MarketCard,

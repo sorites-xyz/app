@@ -16,7 +16,11 @@ export async function handler(_req: Request, props: PageProps) {
   }
 
   const response = await fetch(
-    `https://api.basescan.org/api?module=contract&action=getabi&address=${props.params.address}&apikey=${apiKey}`,
+    props.params.address === "Sorites"
+      ? "https://raw.githubusercontent.com/sorites-xyz/contract/master/bin/contracts/Sorites.abi"
+      : props.params.address === "IFuturesProvider"
+      ? "https://raw.githubusercontent.com/sorites-xyz/contract/master/bin/interfaces/IFuturesProvider.abi"
+      : `https://api.basescan.org/api?module=contract&action=getabi&address=${props.params.address}&apikey=${apiKey}`,
   );
 
   if (!response.ok) {
