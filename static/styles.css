@@ -367,6 +367,7 @@ table {
 
   th, td {
     height: 60px;
+    align-items: center;
   }
   
   td, th {
@@ -374,7 +375,6 @@ table {
     padding: 10px 15px;
     font-size: 14px;
     font-style: normal;
-    font-weight: 600;
     line-height: 20px; /* 142.857% */
   }
 }

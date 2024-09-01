@@ -1,6 +1,7 @@
 import { formatCurrencyShort } from "../Markets/formatCurrencyShort.ts";
 import { PortfolioItem } from "../../../types.ts";
 import { Button } from "../../components/Button/Button.tsx";
+import { Tag } from "../../components/Tag/Tag.tsx";
 
 const portfolioItems: PortfolioItem[] = [
   {
@@ -70,40 +71,32 @@ export function Portfolio() {
       {portfolioItems.length > 0 && (
         <table>
           <tr>
-            <th>Speculation</th>
+            <th>Event</th>
             <th>Tokens</th>
-            <th>Standing to win</th>
+            <th>To win</th>
             <th>Status</th>
           </tr>
           {portfolioItems.map((item) => (
             <tr
               class={`portfolio-row-${item.outcome}`}
             >
-              <td>{item.label}</td>
-              <td>{item.heldTokens} × {item.outcome.toUpperCase()}</td>
+              <td>
+                {item.label} {item.outcome === "yes"
+                  ? <Tag type="green">Yes</Tag>
+                  : <Tag type="red">No</Tag>}
+              </td>
+              <td>{item.heldTokens}</td>
               <td>
                 {formatCurrencyShort(
                   item.totalUSDC * item.heldTokens / item.totalTokens,
                 )}
               </td>
               <td>
-                {item.status === "open" && (
-                  <div>
-                    Resolving on{" "}
-                    {new Date(item.endTime).toDateString().split(" ").slice(1)
-                      .join(" ")}
-                  </div>
-                )}
-                {item.status === "won" && (
-                  <div class="portfolio-button portfolio-button-won">
-                    Won - Collect USDC
-                  </div>
-                )}
-                {item.status === "lost" && (
-                  <div class="portfolio-button portfolio-button-lost">
-                    Lost - Burn Tokens
-                  </div>
-                )}
+                {item.status === "open" && <div>Pending</div>}
+                {item.status === "won" && <div>Won</div>}
+                {item.status === "won_claimed" && <div>Claimed</div>}
+                {item.status === "lost" && <div>Lost</div>}
+                {item.status === "lost_burned" && <div>Burned</div>}
               </td>
             </tr>
           ))}

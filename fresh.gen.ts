@@ -15,6 +15,7 @@ import * as $components_NewEventModalButton_NewEventModalButton from "./islands/
 import * as $components_Pills_PillTick from "./islands/components/Pills/PillTick.tsx";
 import * as $components_Pills_Pills from "./islands/components/Pills/Pills.tsx";
 import * as $components_SelectInput_SelectInput from "./islands/components/SelectInput/SelectInput.tsx";
+import * as $components_Tag_Tag from "./islands/components/Tag/Tag.tsx";
 import * as $components_TextInput_TextInput from "./islands/components/TextInput/TextInput.tsx";
 import * as $components_WalletButton_WalletButton from "./islands/components/WalletButton/WalletButton.tsx";
 import * as $pages_Markets_MarketCard from "./islands/pages/Markets/MarketCard.tsx";
@@ -43,6 +44,7 @@ const manifest = {
     "./islands/components/Pills/Pills.tsx": $components_Pills_Pills,
     "./islands/components/SelectInput/SelectInput.tsx":
       $components_SelectInput_SelectInput,
+    "./islands/components/Tag/Tag.tsx": $components_Tag_Tag,
     "./islands/components/TextInput/TextInput.tsx":
       $components_TextInput_TextInput,
     "./islands/components/WalletButton/WalletButton.tsx":
