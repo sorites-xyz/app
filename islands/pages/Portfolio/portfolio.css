@@ -1,0 +1,22 @@
+.sorted {
+    cursor: pointer;
+    color: #000000;
+  }
+
+  .sorted span {
+    transform: scale(1.2); /* Scale the arrow icons to 1.2 times their original size */
+  }
+
+  .sorted.active {
+    font-weight: bolder ;
+  }
+  
+  .fa-solid.fa-arrow-up {
+    font-size: 12px;
+    margin-left: 5px;
+  }
+  
+  .fa-solid.fa-arrow-down {
+    font-size: 12px;
+    margin-left: 5px;
+  }
