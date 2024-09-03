@@ -1,7 +1,9 @@
 import { formatCurrencyShort } from "../Markets/formatCurrencyShort.ts";
 import { PortfolioItem } from "../../../types.ts";
 import { Button } from "../../components/Button/Button.tsx";
-import { signal, computed } from '@preact/signals';
+import { signal, useComputed } from '@preact/signals';
+
+
 
 const portfolioItems: PortfolioItem[] = [
   {
@@ -56,47 +58,50 @@ const portfolioItems: PortfolioItem[] = [
   },
 ];
 
-const sortOrder = signal({
-  tokens: 'asc',
-  standingToWin: 'asc',
-  status: 'asc'
-});
+type ColumnName = 'tokens' | 'standingToWin';
 
-let lastSortedColumn = 'tokens';
-
-const handleSort = (column: 'tokens' | 'standingToWin') => {
-  lastSortedColumn = column;
-  sortOrder.value = {
-    ...sortOrder.value,
-    [column]: sortOrder.value[column] === 'asc' ? 'desc' : 'asc',
-  };
+const sortingFunctions: Record<ColumnName, (a: PortfolioItem, b: PortfolioItem) => number> = {
+  tokens: (a, b) => a.heldTokens - b.heldTokens,
+  standingToWin: (a, b) => (calculateStandingToWin(a)) - (calculateStandingToWin(b)),
 };
 
-const sortedData = computed(() => {
-  const order = sortOrder.value;
-  let sortedItems = portfolioItems.slice();
-
-  if (lastSortedColumn === 'tokens') {
-    sortedItems = sortedItems.sort((a, b) => {
-      if (order.tokens === 'desc') {
-        return b.heldTokens - a.heldTokens;
-      } else {
-        return a.heldTokens - b.heldTokens;
-      }
-    });
-  } else if (lastSortedColumn === 'standingToWin') {
-    sortedItems = sortedItems.sort((a, b) => {
-      if (order.standingToWin === 'desc') {
-        return (b.totalUSDC * b.heldTokens / b.totalTokens) - (a.totalUSDC * a.heldTokens / a.totalTokens);
-      } else {
-        return (a.totalUSDC * a.heldTokens / a.totalTokens) - (b.totalUSDC * b.heldTokens / b.totalTokens);
-      }
-    });
-  }
-
-  return sortedItems;
+const sortOrder = signal({
+  column: 'tokens' as ColumnName,
+  direction: 'asc'
 });
+
+const handleSort = (column: ColumnName) => {
+  if (sortOrder.value.column === column) {
+    sortOrder.value = {
+      ...sortOrder.value,
+      direction: sortOrder.value.direction === 'asc' ? 'desc' : 'asc',
+    };
+  } else {
+    sortOrder.value = {
+      column,
+      direction: 'asc'
+    };
+  }
+};
+
+const calculateStandingToWin = (item: PortfolioItem) => {
+  return item.totalUSDC * item.heldTokens / item.totalTokens;
+};
+
+
 export function Portfolio() {
+  const sortedData = useComputed(() => {
+    const { column, direction } = sortOrder.value;
+    let sortedItems = portfolioItems.slice();
+
+    sortedItems = sortedItems.sort((a, b) => {
+      const sortingFunction = sortingFunctions[column];
+      const result = sortingFunction(a, b);
+      return direction === 'desc' ? -result : result;
+    });
+
+    return sortedItems;
+  });
   return (
     <div class="container gap-container">
       <div class="text-button-row">
@@ -113,23 +118,39 @@ export function Portfolio() {
           <tr>
             <th>Speculation</th>
             <th>
-              <span 
-                onClick={() => handleSort('tokens')}
-                class={`sorted ${lastSortedColumn === 'tokens' ? 'active' : ''}`}
+              <div class="column_header">
+                <span 
+                  onClick={() => handleSort('tokens')}
+                  class={`sorted ${sortOrder.value.column === 'tokens' ? 'active' : ''}`}
                 >
-                Tokens
-                {sortOrder.value.tokens === 'asc' ? '\u2191' : '\u2193'}
-              </span>
+                  Tokens
+                  {sortOrder.value.column === 'tokens' ? 
+                    (sortOrder.value.direction === 'asc' ? 
+                      <img src="/caret-down.png" class="caret caret-down"/> : 
+                      <img src="/caret-down.png" class="caret caret-up"/>
+                    ) : 
+                    <img src="/caret-down.png" class={"caret caret-down caret-disabled"}/>
+                  }
+                </span>
+              </div>
             </th>
 
             <th>
-              <span
-                onClick={() => handleSort('standingToWin')}
-                class={`sorted ${lastSortedColumn === 'standingToWin' ? 'active' : ''}`}
+              <div class="column_header">
+                <span
+                  onClick={() => handleSort('standingToWin')}
+                  class={`sorted ${sortOrder.value.column === 'standingToWin' ? 'active' : ''}`}
                 >
-                Standing to win
-                {sortOrder.value.standingToWin === 'asc' ? '\u2191' : '\u2193'}
-              </span>
+                  Standing to win
+                  {sortOrder.value.column === 'standingToWin' ? 
+                    (sortOrder.value.direction === 'asc' ? 
+                      <img src="/caret-down.png" class="caret caret-down"/> : 
+                      <img src="/caret-down.png" class="caret caret-up"/>
+                    ) : 
+                    <img src="/caret-down.png" class={"caret caret-down caret-disabled"}/>
+                  }
+                </span>
+              </div>
             </th>
             <th>Status</th>
           </tr>
@@ -140,9 +161,7 @@ export function Portfolio() {
               <td>{item.label}</td>
               <td>{item.heldTokens} × {item.outcome.toUpperCase()}</td>
               <td>
-                {formatCurrencyShort(
-                  item.totalUSDC * item.heldTokens / item.totalTokens,
-                )}
+                {formatCurrencyShort(calculateStandingToWin(item))}
               </td>
               <td>
                 {item.status === "open" && (

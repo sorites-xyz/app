@@ -1,6 +1,12 @@
 .sorted {
+    display: flex;
+    align-items: center;
     cursor: pointer;
     color: #000000;
+  }
+
+  .sorted img {
+    margin-left: 5px;
   }
 
   .sorted span {
@@ -16,7 +22,27 @@
     margin-left: 5px;
   }
   
+  .caret-disabled {
+    opacity: 0.5;
+    filter: grayscale(100%);
+  }
+  
   .fa-solid.fa-arrow-down {
     font-size: 12px;
     margin-left: 5px;
+  }
+
+  .caret{
+    display: inline-block;
+    transition: transform 0.3s ease;
+  }
+
+  .caret-up{
+    transform: rotate(180deg);
+  }
+
+  .column_header{
+    display: flex;
+    align-items: center;
+    gap: 1px;
   }
