@@ -25,5 +25,5 @@ export type PortfolioItem = {
   heldTokens: number;
 
   endTime: number;
-  status: "open" | "won" | "lost";
+  status: "open" | "won" | "lost" | "won_claimed" | "lost_burned";
 };

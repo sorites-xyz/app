@@ -1,0 +1,18 @@
+.TagComponent {
+  display: inline-block;
+  border-radius: 5px;
+  text-align: center;
+  font-size: 12px;
+  font-weight: 400;
+  padding: 0 6px;
+
+  &.green {
+    color: #067A57;
+    background: #0ACC920D;
+  }
+
+  &.red {
+    color: #C73A3A;
+    background: #FF4A4A0D;
+  }
+}

@@ -1,9 +1,8 @@
 import { formatCurrencyShort } from "../Markets/formatCurrencyShort.ts";
 import { PortfolioItem } from "../../../types.ts";
 import { Button } from "../../components/Button/Button.tsx";
-import { signal, useComputed } from '@preact/signals';
-
-
+import { signal, useComputed } from "@preact/signals";
+import { Tag } from "../../components/Tag/Tag.tsx";
 
 const portfolioItems: PortfolioItem[] = [
   {
@@ -58,28 +57,32 @@ const portfolioItems: PortfolioItem[] = [
   },
 ];
 
-type ColumnName = 'tokens' | 'standingToWin';
+type ColumnName = "tokens" | "standingToWin";
 
-const sortingFunctions: Record<ColumnName, (a: PortfolioItem, b: PortfolioItem) => number> = {
+const sortingFunctions: Record<
+  ColumnName,
+  (a: PortfolioItem, b: PortfolioItem) => number
+> = {
   tokens: (a, b) => a.heldTokens - b.heldTokens,
-  standingToWin: (a, b) => (calculateStandingToWin(a)) - (calculateStandingToWin(b)),
+  standingToWin: (a, b) =>
+    (calculateStandingToWin(a)) - (calculateStandingToWin(b)),
 };
 
 const sortOrder = signal({
-  column: 'tokens' as ColumnName,
-  direction: 'asc'
+  column: "tokens" as ColumnName,
+  direction: "asc",
 });
 
 const handleSort = (column: ColumnName) => {
   if (sortOrder.value.column === column) {
     sortOrder.value = {
       ...sortOrder.value,
-      direction: sortOrder.value.direction === 'asc' ? 'desc' : 'asc',
+      direction: sortOrder.value.direction === "asc" ? "desc" : "asc",
     };
   } else {
     sortOrder.value = {
       column,
-      direction: 'asc'
+      direction: "asc",
     };
   }
 };
@@ -87,7 +90,6 @@ const handleSort = (column: ColumnName) => {
 const calculateStandingToWin = (item: PortfolioItem) => {
   return item.totalUSDC * item.heldTokens / item.totalTokens;
 };
-
 
 export function Portfolio() {
   const sortedData = useComputed(() => {
@@ -97,7 +99,7 @@ export function Portfolio() {
     sortedItems = sortedItems.sort((a, b) => {
       const sortingFunction = sortingFunctions[column];
       const result = sortingFunction(a, b);
-      return direction === 'desc' ? -result : result;
+      return direction === "desc" ? -result : result;
     });
 
     return sortedItems;
@@ -119,18 +121,23 @@ export function Portfolio() {
             <th>Speculation</th>
             <th>
               <div class="column_header">
-                <span 
-                  onClick={() => handleSort('tokens')}
-                  class={`sorted ${sortOrder.value.column === 'tokens' ? 'active' : ''}`}
+                <span
+                  onClick={() => handleSort("tokens")}
+                  class={`sorted ${
+                    sortOrder.value.column === "tokens" ? "active" : ""
+                  }`}
                 >
                   Tokens
-                  {sortOrder.value.column === 'tokens' ? 
-                    (sortOrder.value.direction === 'asc' ? 
-                      <img src="/caret-down.png" class="caret caret-down"/> : 
-                      <img src="/caret-down.png" class="caret caret-up"/>
-                    ) : 
-                    <img src="/caret-down.png" class={"caret caret-down caret-disabled"}/>
-                  }
+                  {sortOrder.value.column === "tokens"
+                    ? (sortOrder.value.direction === "asc"
+                      ? <img src="/caret-down.png" class="caret caret-down" />
+                      : <img src="/caret-down.png" class="caret caret-up" />)
+                    : (
+                      <img
+                        src="/caret-down.png"
+                        class={"caret caret-down caret-disabled"}
+                      />
+                    )}
                 </span>
               </div>
             </th>
@@ -138,17 +145,22 @@ export function Portfolio() {
             <th>
               <div class="column_header">
                 <span
-                  onClick={() => handleSort('standingToWin')}
-                  class={`sorted ${sortOrder.value.column === 'standingToWin' ? 'active' : ''}`}
+                  onClick={() => handleSort("standingToWin")}
+                  class={`sorted ${
+                    sortOrder.value.column === "standingToWin" ? "active" : ""
+                  }`}
                 >
-                  Standing to win
-                  {sortOrder.value.column === 'standingToWin' ? 
-                    (sortOrder.value.direction === 'asc' ? 
-                      <img src="/caret-down.png" class="caret caret-down"/> : 
-                      <img src="/caret-down.png" class="caret caret-up"/>
-                    ) : 
-                    <img src="/caret-down.png" class={"caret caret-down caret-disabled"}/>
-                  }
+                  To win
+                  {sortOrder.value.column === "standingToWin"
+                    ? (sortOrder.value.direction === "asc"
+                      ? <img src="/caret-down.png" class="caret caret-down" />
+                      : <img src="/caret-down.png" class="caret caret-up" />)
+                    : (
+                      <img
+                        src="/caret-down.png"
+                        class={"caret caret-down caret-disabled"}
+                      />
+                    )}
                 </span>
               </div>
             </th>
@@ -158,29 +170,21 @@ export function Portfolio() {
             <tr
               class={`portfolio-row-${item.outcome}`}
             >
-              <td>{item.label}</td>
-              <td>{item.heldTokens} × {item.outcome.toUpperCase()}</td>
+              <td>
+                {item.label} {item.outcome === "yes"
+                  ? <Tag type="green">Yes</Tag>
+                  : <Tag type="red">No</Tag>}
+              </td>
+              <td>{item.heldTokens}</td>
               <td>
                 {formatCurrencyShort(calculateStandingToWin(item))}
               </td>
               <td>
-                {item.status === "open" && (
-                  <div>
-                    Resolving on{" "}
-                    {new Date(item.endTime).toDateString().split(" ").slice(1)
-                      .join(" ")}
-                  </div>
-                )}
-                {item.status === "won" && (
-                  <div class="portfolio-button portfolio-button-won">
-                    Won - Collect USDC
-                  </div>
-                )}
-                {item.status === "lost" && (
-                  <div class="portfolio-button portfolio-button-lost">
-                    Lost - Burn Tokens
-                  </div>
-                )}
+                {item.status === "open" && <div>Pending</div>}
+                {item.status === "won" && <div>Won</div>}
+                {item.status === "won_claimed" && <div>Claimed</div>}
+                {item.status === "lost" && <div>Lost</div>}
+                {item.status === "lost_burned" && <div>Burned</div>}
               </td>
             </tr>
           ))}
