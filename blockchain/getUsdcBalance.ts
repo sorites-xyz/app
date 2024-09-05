@@ -1,13 +1,13 @@
 import { Contract } from "npm:ethers";
 import { ethersProvider } from "./basic/ethers.ts";
+import { USDC_IMPL_ADDRESS, USDC_PROXY_ADDRESS } from "../constants.ts";
 
 let usdcContract: Contract | Promise<Contract> | null = null;
 
 // TODO: cache
 export async function getUsdcBalance(address: string) {
-  const usdcProxyAddress = "0x833589fCD6eDb6E08f4c7C32D4f71b54bdA02913";
-  const usdcImplementationAddress =
-    "0x2ce6311ddae708829bc0784c967b7d77d19fd779";
+  const usdcProxyAddress = USDC_PROXY_ADDRESS;
+  const usdcImplementationAddress = USDC_IMPL_ADDRESS;
 
   if (usdcContract === null) {
     usdcContract = await new Promise(async (resolve) => {
