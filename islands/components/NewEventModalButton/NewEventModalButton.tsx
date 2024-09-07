@@ -66,12 +66,16 @@ export function NewEventModalButton({ sorites }: NewEventModalButtonProps) {
       return;
     }
 
-    const res = await provider.send("eth_sendTransaction", [{
-      from: wallet.connections.value.currentAddress,
-      to: futuresProvider.contractAddress,
-      data: tx.data,
-    }]);
-    console.log(res);
+    try {
+      const res = await provider.send("eth_sendTransaction", [{
+        from: wallet.connections.value.currentAddress,
+        to: futuresProvider.contractAddress,
+        data: tx.data,
+      }]);
+      console.log(res);
+    } catch (error) {
+      console.log("Error:", error);
+    }
   }
 
   // TODO: show preview of what the market event will be called
@@ -84,16 +88,16 @@ export function NewEventModalButton({ sorites }: NewEventModalButtonProps) {
     return null;
   }
 
-  if (futuresContractAddress.value === null) {
-    futuresContractAddress.value =
-      sorites.value.futureProviders[0].contractAddress;
-  }
+  // if (futuresContractAddress.value === null) {
+  //   futuresContractAddress.value =
+  //     sorites.value.futureProviders[0].contractAddress;
+  // }
 
-  if (futuresContractAddress.value && metric.value === null) {
-    metric.value = sorites.value.futureProviders
-      .find((p) => p.contractAddress === futuresContractAddress.value)!
-      .metrics[0].metricId.toString();
-  }
+  // if (futuresContractAddress.value && metric.value === null) {
+  //   metric.value = sorites.value.futureProviders
+  //     .find((p) => p.contractAddress === futuresContractAddress.value)!
+  //     .metrics[0].metricId.toString();
+  // }
 
   const futuresProvider = sorites.value.futureProviders.find(
     (p) => p.contractAddress === futuresContractAddress.value,
@@ -188,7 +192,6 @@ export function NewEventModalButton({ sorites }: NewEventModalButtonProps) {
                 onChange={(x) => speculationAmount.value = x}
                 value={speculationAmount.value ?? ""}
                 before={<span>$</span>}
-                after={<span>USDC</span>}
               />
             </>
           )}

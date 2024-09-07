@@ -20,6 +20,10 @@ export function WalletButton() {
   const usdc = useSignal({ address: "", balance: 0 });
 
   useSignalEffect(() => {
+    if (usdc.value.address === connections.value.currentAddress) {
+      return;
+    }
+
     if (connections.value.currentAddress) {
       if (usdc.value.address !== connections.value.currentAddress) {
         usdc.value = { address: connections.value.currentAddress, balance: 0 };

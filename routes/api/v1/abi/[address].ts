@@ -20,7 +20,9 @@ export async function handler(_req: Request, props: PageProps) {
       ? "https://raw.githubusercontent.com/sorites-xyz/contract/master/bin/contracts/Sorites.abi"
       : props.params.address === "IFuturesProvider"
       ? "https://raw.githubusercontent.com/sorites-xyz/contract/master/bin/interfaces/IFuturesProvider.abi"
-      : `https://api.basescan.org/api?module=contract&action=getabi&address=${props.params.address}&apikey=${apiKey}`,
+      : `https://${
+        Deno.env.get("BASESCAN_DOMAIN")
+      }/api?module=contract&action=getabi&address=${props.params.address}&apikey=${apiKey}`,
   );
 
   if (!response.ok) {
@@ -29,6 +31,7 @@ export async function handler(_req: Request, props: PageProps) {
 
   const body = await response.json();
   if (body.message !== "OK") {
+    console.log(body);
     return Response.json({ ok: false, error: "Failed to fetch ABI (2)" });
   }
 

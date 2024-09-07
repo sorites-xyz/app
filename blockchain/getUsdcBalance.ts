@@ -13,6 +13,7 @@ export async function getUsdcBalance(address: string) {
     usdcContract = await new Promise(async (resolve) => {
       const { abi } = await fetch(`/api/v1/abi/${usdcImplementationAddress}`)
         .then((res) => res.json());
+      console.log({ usdcProxyAddress, abi, ethersProvider });
       const contract = new Contract(usdcProxyAddress, abi, ethersProvider);
       resolve(contract);
     });
