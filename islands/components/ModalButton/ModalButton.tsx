@@ -5,14 +5,22 @@ type ModalButtonProps = {
   buttonContent: ComponentChildren;
   modalContent: ComponentChildren;
   open: Signal<boolean>;
+  disabled?: boolean;
 };
 
 export function ModalButton(
-  { buttonContent, modalContent, open }: ModalButtonProps,
+  { buttonContent, modalContent, open, disabled }: ModalButtonProps,
 ) {
   return (
     <div class="ModalButton__wrapper">
-      <div class={"ModalButton__button"} onClick={() => open.value = true}>
+      <div
+        class={"ModalButton__button"}
+        onClick={() => {
+          if (!disabled) {
+            open.value = true;
+          }
+        }}
+      >
         {buttonContent}
       </div>
 

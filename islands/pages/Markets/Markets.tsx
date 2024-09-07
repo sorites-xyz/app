@@ -26,6 +26,12 @@ export function Markets() {
         <NewEventModalButton sorites={sorites} />
       </div>
 
+      {markets.value.length === 0 && (
+        <div class="empty-box">
+          There are no Market Events yet. You should create one!
+        </div>
+      )}
+
       {markets.value.length > 0 && (
         <>
           <Pills

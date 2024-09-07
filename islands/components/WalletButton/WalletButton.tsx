@@ -37,7 +37,7 @@ export function WalletButton() {
           usdc.value = { address, balance };
         }
       });
-    } else {
+    } else if (usdc.value.address !== "") {
       usdc.value = { address: "", balance: 0 };
     }
   });

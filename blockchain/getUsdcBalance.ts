@@ -4,8 +4,7 @@ import { USDC_IMPL_ADDRESS, USDC_PROXY_ADDRESS } from "../constants.ts";
 
 let usdcContract: Contract | Promise<Contract> | null = null;
 
-// TODO: cache
-export async function getUsdcBalance(address: string) {
+export async function getUsdcContract() {
   const usdcProxyAddress = USDC_PROXY_ADDRESS;
   const usdcImplementationAddress = USDC_IMPL_ADDRESS;
 
@@ -23,9 +22,24 @@ export async function getUsdcBalance(address: string) {
     usdcContract = await usdcContract;
   }
 
+  return usdcContract!;
+}
+
+// TODO: cache
+export async function getUsdcBalance(address: string) {
+  const usdcContract = await getUsdcContract();
   const balance = await usdcContract!.balanceOf(address);
   const decimals = await usdcContract!.decimals();
   const usdc = Number(balance) / (10 ** Number(decimals));
 
   return usdc;
+}
+
+export async function getUsdcAllowance(owner: string, spender: string) {
+  const usdcContract = await getUsdcContract();
+  const allowance = await usdcContract!.allowance(owner, spender);
+  const decimals = await usdcContract!.decimals();
+  const usdc = Number(allowance) / (10 ** Number(decimals));
+
+  return BigInt(usdc);
 }
