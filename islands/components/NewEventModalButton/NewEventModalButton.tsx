@@ -47,8 +47,8 @@ export function NewEventModalButton({ sorites }: NewEventModalButtonProps) {
 
     if (!allFilledOut.value) warnings.push("Fill out all fields.");
 
-    if (speculationAmount.value && Number(speculationAmount.value) < 25) {
-      warnings.push("Speculation amount must be at least $25.");
+    if (speculationAmount.value && Number(speculationAmount.value) < 0.01) {
+      warnings.push("Speculation amount must be at least $0.01.");
     }
 
     if (resolvesAt.value) {

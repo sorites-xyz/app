@@ -1,4 +1,4 @@
-import { signal } from "@preact/signals";
+import { signal, useSignal } from "@preact/signals";
 import { formatCurrencyShort } from "./formatCurrencyShort.ts";
 import { Market } from "../../../types.ts";
 import { useId } from "preact/hooks";
@@ -13,6 +13,11 @@ const open = signal<"yes" | "no">("no");
 
 export function MarketCard({ market }: MarketCardProps) {
   const id = useId();
+
+  const speculationAmount = useSignal("100");
+
+  async function speculate() {
+  }
 
   return (
     <div class={openId.value === id ? "market market-open" : "market"}>
@@ -31,8 +36,8 @@ export function MarketCard({ market }: MarketCardProps) {
           </div>
 
           <TextInput
-            value="123"
-            onChange={() => {}}
+            value={speculationAmount.value}
+            onChange={(x) => speculationAmount.value = x}
             placeholder="1000"
             before={<span>$</span>}
           />
@@ -41,19 +46,19 @@ export function MarketCard({ market }: MarketCardProps) {
             ? (
               <div
                 class="speculate-button speculate-button-active speculate-button-yes"
-                onClick={() => open.value = "yes"}
+                onClick={speculate}
               >
                 Speculate Yes
-                <small>To win $100.12</small>
+                {/* <small>To win $100.12</small> */}
               </div>
             )
             : (
               <div
                 class="speculate-button speculate-button-active speculate-button-no"
-                onClick={() => open.value = "no"}
+                onClick={speculate}
               >
                 Speculate No
-                <small>To win $100.12</small>
+                {/* <small>To win $100.12</small> */}
               </div>
             )}
         </>
@@ -98,7 +103,7 @@ export function MarketCard({ market }: MarketCardProps) {
           </div>
           <div class="info">
             <small>
-              Volume: {formatCurrencyShort(Math.random() * 100_000)}
+              Volume: {formatCurrencyShort(market.totalAmount)}
             </small>
             <small>
               End:{" "}
