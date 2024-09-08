@@ -10,6 +10,7 @@ import { Avatar } from "../Avatar/Avatar.tsx";
 import { ModalButton } from "../ModalButton/ModalButton.tsx";
 import { formatAddress } from "../../../blockchain/utils/formatAddress.ts";
 import { getUsdcBalance } from "../../../blockchain/getUsdcBalance.ts";
+import { demoGlobals } from "../../../blockchain/demoGlobals.ts";
 
 export function WalletButton() {
   const { connections } = useWallet();
@@ -89,7 +90,8 @@ export function WalletButton() {
                   class="WalletButton__avatar"
                 />
                 <div class="WalletButton__balance">
-                  {usdc.value.balance.toFixed(2)} USDC
+                  {/* {usdc.value.balance.toFixed(2)} USDC */}
+                  {demoGlobals.value.usdcBalance.toFixed(2)} USDC
                 </div>
               </div>
             )}

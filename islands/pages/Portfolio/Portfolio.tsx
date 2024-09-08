@@ -1,62 +1,11 @@
-import { formatCurrencyShort } from "../Markets/formatCurrencyShort.ts";
-import { PortfolioItem } from "../../../types.ts";
+import { demoGlobals } from "../../../blockchain/demoGlobals.ts";
 import { Button } from "../../components/Button/Button.tsx";
 import { Tag } from "../../components/Tag/Tag.tsx";
-
-const portfolioItems: PortfolioItem[] = [
-  {
-    tokenId: "0",
-    label: "ETH Market Cap to reach $2bn on September 24th 2024.",
-    outcome: "yes",
-    totalTokens: 400,
-    heldTokens: 100,
-    totalUSDC: 2000,
-    status: "open",
-    endTime: Date.now() + 1000 * 60 * 60 * 24 * 7,
-  },
-  {
-    tokenId: "2",
-    label: "DOGE Market Cap to reach $2bn on September 24th 2024.",
-    outcome: "yes",
-    totalTokens: 400,
-    heldTokens: 100,
-    totalUSDC: 2000,
-    status: "open",
-    endTime: Date.now() + 1000 * 60 * 60 * 24 * 7,
-  },
-  {
-    tokenId: "1",
-    label: "BTC Market Cap to reach $1bn on September 24th 2024.",
-    outcome: "no",
-    totalTokens: 400,
-    heldTokens: 100,
-    totalUSDC: 2000,
-    status: "open",
-    endTime: Date.now() + 1000 * 60 * 60 * 24 * 7,
-  },
-  {
-    tokenId: "3",
-    label: "SOL Market Cap to reach $1bn on September 24th 2024.",
-    outcome: "no",
-    totalTokens: 400,
-    heldTokens: 100,
-    totalUSDC: 2000,
-    status: "won",
-    endTime: Date.now() - 1000 * 60 * 60 * 24 * 7,
-  },
-  {
-    tokenId: "4",
-    label: "ADA Market Cap to reach $2bn on September 24th 2024.",
-    outcome: "yes",
-    totalTokens: 400,
-    heldTokens: 100,
-    totalUSDC: 2000,
-    status: "lost",
-    endTime: Date.now() - 1000 * 60 * 60 * 24 * 7,
-  },
-];
+import { formatCurrencyShort } from "../Markets/formatCurrencyShort.ts";
 
 export function Portfolio() {
+  const portfolioItems = demoGlobals.value.portfolioItems;
+
   return (
     <div class="container gap-container">
       <div class="text-button-row">
@@ -65,7 +14,7 @@ export function Portfolio() {
       </div>
 
       {portfolioItems.length === 0 && (
-        <small>You haven't placed any speculations yet.</small>
+        <div class="empty-box">You haven't placed any speculations yet.</div>
       )}
 
       {portfolioItems.length > 0 && (

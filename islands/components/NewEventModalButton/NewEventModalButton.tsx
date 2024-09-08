@@ -17,6 +17,7 @@ import {
   getUsdcContract,
 } from "../../../blockchain/getUsdcBalance.ts";
 import { USDC_PROXY_ADDRESS } from "../../../constants.ts";
+import { demoGlobals } from "../../../blockchain/demoGlobals.ts";
 
 type NewEventModalButtonProps = {
   sorites: Signal<Sorites | null>;
@@ -65,6 +66,48 @@ export function NewEventModalButton({ sorites }: NewEventModalButtonProps) {
 
   async function createMarketEvent() {
     if (!allFilledOut.value) return;
+
+    const label = `Price of ${asset.value} will be less than ${
+      values.value[0]
+    } on ${
+      new Date(resolvesAt.value!).toString().split(" ").slice(1, 4).join(
+        " ",
+      )
+    }.`;
+
+    demoGlobals.value = {
+      ...demoGlobals.value,
+      portfolioItems: [
+        ...demoGlobals.value.portfolioItems,
+        {
+          label,
+          heldTokens: Number(speculationAmount.value!),
+          endTime: new Date(resolvesAt.value!).getTime(),
+          outcome: expectedOutcome.value === "yes" ? "yes" : "no",
+          status: "open",
+          tokenId: Date.now().toString(36),
+          totalTokens: Number(speculationAmount.value!) + 2,
+          totalUSDC: Number(speculationAmount.value!),
+        },
+      ],
+      marketEvents: [
+        ...demoGlobals.value.marketEvents,
+        {
+          id: Date.now().toString(36),
+          label,
+          betYesPercent: 99,
+          endTime: new Date(resolvesAt.value!).getTime(),
+          totalAmount: Number(speculationAmount.value),
+          tags: [asset.value!],
+        },
+      ],
+      usdcBalance: Number(
+        (demoGlobals.value.usdcBalance - Number(speculationAmount.value!))
+          .toFixed(2),
+      ),
+    };
+    open.value = false;
+    return;
 
     /*
       string calldata asset,

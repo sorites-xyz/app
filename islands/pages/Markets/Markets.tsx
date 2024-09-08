@@ -4,20 +4,26 @@ import { useSorites } from "../../../blockchain/hooks/useSorites.ts";
 import { NewEventModalButton } from "../../components/NewEventModalButton/NewEventModalButton.tsx";
 import { Pills } from "../../components/Pills/Pills.tsx";
 import { MarketCard } from "./MarketCard.tsx";
+import { demoGlobals } from "../../../blockchain/demoGlobals.ts";
 
 export function Markets() {
   const currentTag = useSignal<string | null>(null);
 
   const sorites = useSorites();
-  const markets = useMarkets(sorites);
 
-  if (!markets.value) return null;
+  if (!demoGlobals.value.marketEvents) return null;
 
-  const tags = [...new Set(markets.value!.flatMap((market) => market.tags))];
+  const tags = [
+    ...new Set(
+      demoGlobals.value.marketEvents!.flatMap((market) => market.tags),
+    ),
+  ];
 
   const marketsToDisplay = currentTag.value
-    ? markets.value!.filter((market) => market.tags.includes(currentTag.value!))
-    : markets.value || [];
+    ? demoGlobals.value.marketEvents!.filter((market) =>
+      market.tags.includes(currentTag.value!)
+    )
+    : demoGlobals.value.marketEvents || [];
 
   return (
     <div class="container gap-container">
@@ -26,13 +32,13 @@ export function Markets() {
         <NewEventModalButton sorites={sorites} />
       </div>
 
-      {markets.value.length === 0 && (
+      {demoGlobals.value.marketEvents.length === 0 && (
         <div class="empty-box">
           There are no Market Events yet. You should create one!
         </div>
       )}
 
-      {markets.value.length > 0 && (
+      {demoGlobals.value.marketEvents.length > 0 && (
         <>
           <Pills
             selected={currentTag}
