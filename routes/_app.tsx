@@ -20,6 +20,23 @@ export default function App({ Component }: PageProps) {
         <link rel="icon" href="/favicon.png" />
       </head>
       <body>
+        <div
+          style={{
+            textAlign: "center",
+            padding: 10,
+            background: "#F6E4E4",
+            color: "#C73B3B",
+            border: "solid 2px #C73B3B",
+            borderLeft: 0,
+            borderRight: 0,
+          }}
+        >
+          <b>Read this warning carefully.</b>
+          <div>
+            This is a beta. It could be buggy. The contracts are not security
+            audited. You could lose all your money. Use at your own risk.
+          </div>
+        </div>
         <Component />
       </body>
     </html>
