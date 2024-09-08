@@ -139,13 +139,13 @@ export function NewEventModalButton({ sorites }: NewEventModalButtonProps) {
         });
       }
 
-      const marketEventRes = await provider.send("eth_sendTransaction", [{
+      await provider.send("eth_sendTransaction", [{
         from: wallet.connections.value.currentAddress,
         to: futuresProvider.contractAddress,
         data: tx.data,
       }]);
 
-      console.log(marketEventRes);
+      open.value = false;
     } catch (error) {
       console.log("Error:", error);
     }

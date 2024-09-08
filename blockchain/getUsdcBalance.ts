@@ -41,5 +41,5 @@ export async function getUsdcAllowance(owner: string, spender: string) {
   const decimals = await usdcContract!.decimals();
   const usdc = Number(allowance) / (10 ** Number(decimals));
 
-  return BigInt(usdc);
+  return BigInt(Math.floor(usdc));
 }

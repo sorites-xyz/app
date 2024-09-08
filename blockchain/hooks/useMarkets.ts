@@ -51,16 +51,14 @@ export function useMarkets(sorites: Signal<Sorites | null>) {
           } else {
             marketEventName = marketEventName.replaceAll(find, String(replace));
           }
-        }
-
-        if (type === "usdc") {
+        } else if (type === "usdc") {
           marketEventName = marketEventName.replaceAll(
             find,
             "$" + (Number(replace)).toFixed(2),
           );
+        } else {
+          console.log("Unknown substitution type:", { type, find, replace });
         }
-
-        console.log("Unknown substitution type:", { type, find, replace });
       });
 
       marketEvents.push({
