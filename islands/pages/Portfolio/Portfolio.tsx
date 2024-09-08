@@ -3,59 +3,7 @@ import { PortfolioItem } from "../../../types.ts";
 import { Button } from "../../components/Button/Button.tsx";
 import { signal, useComputed } from "@preact/signals";
 import { Tag } from "../../components/Tag/Tag.tsx";
-
-const portfolioItems: PortfolioItem[] = [
-  {
-    tokenId: "0",
-    label: "ETH Market Cap to reach $2bn on September 24th 2024.",
-    outcome: "yes",
-    totalTokens: 200,
-    heldTokens: 100,
-    totalUSDC: 1000,
-    status: "open",
-    endTime: Date.now() + 1000 * 60 * 60 * 24 * 7,
-  },
-  {
-    tokenId: "2",
-    label: "DOGE Market Cap to reach $2bn on September 24th 2024.",
-    outcome: "yes",
-    totalTokens: 3000,
-    heldTokens: 200,
-    totalUSDC: 7000,
-    status: "open",
-    endTime: Date.now() + 1000 * 60 * 60 * 24 * 7,
-  },
-  {
-    tokenId: "1",
-    label: "BTC Market Cap to reach $1bn on September 24th 2024.",
-    outcome: "no",
-    totalTokens: 4000,
-    heldTokens: 50,
-    totalUSDC: 5000,
-    status: "open",
-    endTime: Date.now() + 1000 * 60 * 60 * 24 * 7,
-  },
-  {
-    tokenId: "3",
-    label: "SOL Market Cap to reach $1bn on September 24th 2024.",
-    outcome: "no",
-    totalTokens: 500,
-    heldTokens: 10,
-    totalUSDC: 2000,
-    status: "won",
-    endTime: Date.now() - 1000 * 60 * 60 * 24 * 7,
-  },
-  {
-    tokenId: "4",
-    label: "ADA Market Cap to reach $2bn on September 24th 2024.",
-    outcome: "yes",
-    totalTokens: 400,
-    heldTokens: 300,
-    totalUSDC: 2000,
-    status: "lost",
-    endTime: Date.now() - 1000 * 60 * 60 * 24 * 7,
-  },
-];
+import { usePortfolioItems } from "../../../blockchain/hooks/usePortfolioItems.ts";
 
 type ColumnName = "tokens" | "standingToWin";
 
@@ -92,9 +40,15 @@ const calculateStandingToWin = (item: PortfolioItem) => {
 };
 
 export function Portfolio() {
+  const portfolioItems = usePortfolioItems();
+
+  const canClaim = useComputed(() => {
+    return portfolioItems.value.some((item) => item.status !== "open");
+  });
+
   const sortedData = useComputed(() => {
     const { column, direction } = sortOrder.value;
-    let sortedItems = portfolioItems.slice();
+    let sortedItems = portfolioItems.value.slice();
 
     sortedItems = sortedItems.sort((a, b) => {
       const sortingFunction = sortingFunctions[column];
@@ -108,14 +62,14 @@ export function Portfolio() {
     <div class="container gap-container">
       <div class="text-button-row">
         <h1>Portfolio</h1>
-        <Button label="Claim all" />
+        <Button label="Claim all" disabled={!canClaim.value} />
       </div>
 
-      {portfolioItems.length === 0 && (
-        <small>You haven't placed any speculations yet.</small>
+      {portfolioItems.value.length === 0 && (
+        <div class="empty-box">You haven't placed any speculations yet.</div>
       )}
 
-      {portfolioItems.length > 0 && (
+      {portfolioItems.value.length > 0 && (
         <table>
           <tr>
             <th>Speculation</th>

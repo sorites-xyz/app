@@ -66,9 +66,10 @@ export function useMarkets(sorites: Signal<Sorites | null>) {
         endTime: Number(endTime),
         label: marketEventName,
         tags: [asset],
-        totalAmount: Number(totalUSDC),
+        totalAmount: Number(totalUSDC) - 1,
         betYesPercent: (Number(totalYesTokens) - 1) /
           (Number(totalYesTokens) + Number(totalNoTokens) - 2),
+        totalTokens: Number(totalYesTokens) + Number(totalNoTokens) - 2,
       });
     }
 

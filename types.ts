@@ -6,6 +6,7 @@ export type Market = {
 
   totalAmount: number;
   betYesPercent: number;
+  totalTokens: number;
 
   endTime: number;
   // token: string;
