@@ -1,7 +1,7 @@
 import { effect, signal, useSignalEffect } from "@preact/signals";
 import { ConnectionsData } from "../types.ts";
 
-const STORAGE_KEY = "wallets8";
+const STORAGE_KEY = "wallets9";
 
 const connections = signal<ConnectionsData>({
   loaded: false,

@@ -13,9 +13,15 @@ export async function getContract(props: ContractProps): Promise<Contract> {
 
   if (!contracts.has(key)) {
     const promise = new Promise<Contract>(async (resolve) => {
-      const { abi } = await fetch(`/api/v1/abi/${abiAddress}`).then((res) =>
-        res.json()
-      );
+      const abiUrl = props.abiUrl ?? `/api/v1/abi/${abiAddress}`;
+      const abi = await fetch(abiUrl).then(async (res) => {
+        const text = await res.text();
+        // console.log(text);
+        const body = JSON.parse(text);
+
+        if ("abi" in body) return body.abi;
+        else return body;
+      });
       const contract = new Contract(proxyAddress, abi, ethersProvider);
       resolve(contract);
     });

@@ -22,6 +22,8 @@ export function SelectInput(
             onChange(e.target.value);
           }}
         >
+          <option value="" disabled selected></option>
+
           {options.map((option) => (
             <option value={option.value} selected={option.value === value}>
               {option.label}

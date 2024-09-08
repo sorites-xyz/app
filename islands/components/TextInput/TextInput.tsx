@@ -2,6 +2,7 @@ import { useId } from "preact/hooks";
 import { ComponentChildren } from "preact";
 
 type TextInputProps = {
+  type?: "text" | "date";
   label?: string;
   value: string;
   onChange: (value: string) => void;
@@ -11,7 +12,7 @@ type TextInputProps = {
 };
 
 export function TextInput(
-  { label, value, onChange, placeholder, before, after }: TextInputProps,
+  { type, label, value, onChange, placeholder, before, after }: TextInputProps,
 ) {
   const id = useId();
 
@@ -22,10 +23,15 @@ export function TextInput(
         {before}
         <input
           id={id}
-          type="text"
+          type={type}
           placeholder={placeholder}
           value={value}
           onChange={(e: any) => onChange(e.target.value)}
+          {...(type === "date"
+            ? {
+              min: new Date(Date.now() + 86400000).toISOString().split("T")[0],
+            }
+            : {})}
         />
         {after}
       </div>

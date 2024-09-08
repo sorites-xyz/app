@@ -11,19 +11,11 @@
   },
   "lint": {
     "rules": {
-      "tags": [
-        "fresh",
-        "recommended"
-      ],
-      "exclude": [
-        "no-async-promise-executor",
-        "no-explicit-any"
-      ]
+      "tags": ["fresh", "recommended"],
+      "exclude": ["no-async-promise-executor", "no-explicit-any"]
     }
   },
-  "exclude": [
-    "**/_fresh/*"
-  ],
+  "exclude": ["**/_fresh/*"],
   "imports": {
     "$fresh/": "https://deno.land/x/fresh@1.6.8/",
     "$std/": "https://deno.land/std@0.216.0/",
@@ -41,8 +33,5 @@
     "@tanstack/query-core": "https://esm.sh/v135/@tanstack/query-core@5.52.0",
     "@rainbow-me/rainbowkit": "https://esm.sh/@rainbow-me/rainbowkit@2.1.5"
   },
-  "compilerOptions": {
-    "jsx": "react-jsx",
-    "jsxImportSource": "preact"
-  }
+  "compilerOptions": { "jsx": "react-jsx", "jsxImportSource": "preact" }
 }
