@@ -15,7 +15,7 @@ export default function Layout({ Component }: PageProps) {
           <div class="row">
             <a class="link" href="/">Markets</a>
             <a class="link" href="/portfolio">Portfolio</a>
-            <a class="link" target="_blank" href="https://docs.sorites.xyz/">
+            {/* <a class="link" target="_blank" href="https://docs.sorites.xyz/">
               Docs
             </a>
             <a
@@ -31,7 +31,7 @@ export default function Layout({ Component }: PageProps) {
               href="https://discord.gg/sorites"
             >
               Discord
-            </a>
+            </a> */}
           </div>
 
           <div class="row">
